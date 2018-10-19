@@ -1,7 +1,6 @@
 #include<iostream>
 using namespace std;
 
-
 template<class E>
 class SqStack
 {
@@ -9,6 +8,7 @@ protected:
 	int count;
 	int maxSize;
 	E *elems;
+	E *now;
 
 	bool full() const;
 	void Init(int size);
@@ -17,9 +17,9 @@ public:
 	virtual ~SqStack();
 	int StackLength();
 	bool StackEmpty();
-	E GetTop(S, &x);
-	ClearStack(&S);
-	bool Push(E x);
+	E GetTop(E &x);
+	void ClearStack();
+    StatusCode Push(E x);
 	bool Pop(E &x);
 };
 
@@ -49,11 +49,10 @@ SqStack<E>::SqStack(int size)
 }
 //构造函数
 
-
 template<class E>
 SqStack<E>::~SqStack
 {
-	if(elems!=NULL)
+	//if(elems!=NULL)
 		delete[]elems;
 }
 //析构函数
@@ -75,21 +74,21 @@ bool SqStack<E>::StackEmpty()
 //判断栈是否为空栈
 
 template <class E>
-E SqStack<E>::GetTop()
+ SqStack<E>::GetTop(E &x)
 {
-
 }
 
 template <class E>
-bool SqStack<E>::Push(E x)
+StatusCode SqStack<E>::Push(E x)
 {
 	if (count > maxSize - 1)
-		return false;
+		return OVER_FLOW;
 	else
 	{
-		*(elems + 1) = x;
+		now++;
+		*now = x;
 		count++;
-		return true;
+		return SUCCESS;
 	}
 }
 //插入元素x
@@ -101,8 +100,8 @@ bool SqStack<E>::Pop(E &x)
 		return false;
 	else
 	{
-		x = *elems;
-		elems--;//???
+		x = *now;
+		now--; 
 		count--;
 		return true;
 	}
@@ -110,6 +109,11 @@ bool SqStack<E>::Pop(E &x)
 }
 //删除元素x
 
+template<class E>
+void SqStack<E>::ClearStack()
+{
+	count = 0;
+}
 
 int main()
 {
