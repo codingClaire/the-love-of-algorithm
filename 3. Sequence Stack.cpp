@@ -1,4 +1,8 @@
 #include<iostream>
+#include<cmath>
+#include<cstring>
+#define DEFAULT_SIZE 100
+#define DEFAULT_INFINITY 1000000
 using namespace std;
 
 template<class E>
@@ -8,8 +12,7 @@ protected:
 	int count;
 	int maxSize;
 	E *elems;
-	E *now;
-
+	E *now;//指向当前元素的指针 
 	bool full() const;
 	void Init(int size);
 public:
@@ -19,8 +22,13 @@ public:
 	bool StackEmpty();
 	E GetTop(E &x);
 	void ClearStack();
-    StatusCode Push(E x);
+    bool Push(E x);
 	bool Pop(E &x);
+	int GetCount(){ return count;}
+	int GetMaxSize(){return maxSize;}
+	
+	void PrintAll();
+	
 };
 
 
@@ -30,27 +38,29 @@ bool SqStack<E>::full() const
 	return count == maxSize;
 }
 //判满
-
-void Init(int size)
+template<class E>
+void SqStack<E>::Init(int size)
 {
 	maxSize = size;
 	count = 0;
 	if (elems != NULL)
 		delete[]elems;//释放
-	elems = new ElemType[maxSize];
+	elems = new E[maxSize];
+	now=elems;
 }
 //初始化栈 最大元素个数为size
 
 template<class E>
 SqStack<E>::SqStack(int size)
 {
+	cout<<"A new stack is constructing.Stack Size:"<<size<<endl;
 	elems = NULL;
 	Init(size);
 }
 //构造函数
 
 template<class E>
-SqStack<E>::~SqStack
+SqStack<E>::~SqStack()
 {
 	//if(elems!=NULL)
 		delete[]elems;
@@ -74,21 +84,22 @@ bool SqStack<E>::StackEmpty()
 //判断栈是否为空栈
 
 template <class E>
- SqStack<E>::GetTop(E &x)
+E SqStack<E>::GetTop(E &x)
 {
 }
 
 template <class E>
-StatusCode SqStack<E>::Push(E x)
+bool SqStack<E>::Push(E x)
 {
 	if (count > maxSize - 1)
-		return OVER_FLOW;
+		return false;
 	else
 	{
 		now++;
 		*now = x;
 		count++;
-		return SUCCESS;
+		cout<<"push element:"<<x<<endl;
+		return true;
 	}
 }
 //插入元素x
@@ -100,6 +111,7 @@ bool SqStack<E>::Pop(E &x)
 		return false;
 	else
 	{
+		cout<<"pop element："<<*now<<endl; 
 		x = *now;
 		now--; 
 		count--;
@@ -115,9 +127,26 @@ void SqStack<E>::ClearStack()
 	count = 0;
 }
 
+template<class E>
+void SqStack<E>::PrintAll()
+{
+	cout<<"Now your stack status:";
+	for(int i=1;i<=count;i++)
+		cout<<elems[i]<<" ";
+	cout<<endl;
+}
+
+
+
+
 int main()
 {
 	cout << "Please enter a expression:" << endl;
-	char a[100];
+	string s;
+	cin>>s;
+	int len=s.size();
+	SqStack<char> stack(len);
+	for(int i=0;i<len;i++)
+		stack.Push(s[i]);
 
 }
