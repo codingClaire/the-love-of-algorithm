@@ -33,6 +33,10 @@ pubilc:
 	void PreOrderTraverse(BinTreeNode<E> *p);//前序遍历
 	void InOrderTraverse(BinTreeNode<E> *p);//中序遍历
 	void PostOrderTraverse(BinTreeNode<E> *p);//后序遍历
+	int maxDepth(BinTreeNode<E> *root);//给定树的根节点求树的深度
+	BinTreeNode* mergeTrees(BinTreeNode* t1, BinTreeNode* t2);//合并两棵二叉树 位置相同的值相加
+	BinTreeNode* searchBST(BinTreeNode* root, int val);//二叉搜索树
+
 private:
 	BinTreeNode<E> *root;//最重要的指针 头指针
 };
@@ -87,7 +91,6 @@ void BinaryTree<E>::PostOrderTraverse(BinTreeNode<E> *p)
 上溢 避免
 下溢 控制循环
 */
-
 int leafnum = 0;
 template<class E>
 void BinaryTree<E>::LeafNum(BinTreeNode<E> *p)
@@ -128,4 +131,50 @@ void BinaryTree<E>::PreOrder(BinTreeNode<E> *p)
 			p = p->Rchild;
 		}
 	}while((!Empty(s))||(p!=NULL))
+}
+
+//求树的深度 leetcode104
+template<class E>
+int BinaryTree<E>::maxDepth(BinTreeNode* root)
+{
+	int length = 0;
+	if (root != NULL)
+	{
+		length = max(maxDepth(root->Lchild), maxDepth(root->Rchild));
+		length++;
+	}
+	return length;
+}
+
+//合并两棵二叉树 位置相同的值相加 leetcode617
+template<class E>
+TreeNode* BinaryTree<E>::mergeTrees(BinTreeNode* t1, BinTreeNode* t2) 
+{
+	if (t1 == NULL) return t2;
+	if (t2 == NULL) return t1;
+	BinTreeNode* newtree = new BinTreeNode(t1->val + t2->val);
+	if (t1 != NULL&&t2 != NULL)
+	{
+
+		newtree->left = mergeTrees(t1->left, t2->left);
+		newtree->right = mergeTrees(t1->right, t2->right);
+
+	}
+	return newtree;
+}
+
+//leetcode700 
+template<class E>
+TreeNode* BinaryTree<E>::searchBST(BinTreeNode* root, int val)
+{
+	// TreeNode* subtree;
+	if (root == NULL) return NULL;
+	else
+	{
+		if (root->val == val)
+			return root;
+		else if (root->val>val)
+			return searchBST(root->left, val);
+		else return searchBST(root->right, val);
+	}
 }
