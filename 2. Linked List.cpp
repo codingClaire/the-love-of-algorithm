@@ -28,6 +28,7 @@ Node<E>::Node(E item, Node<E>* link)
 }
 
 /*Ω·µ„¿‡*/
+
 template <class E>
 class  SimpleLinkedList
 {
