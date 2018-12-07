@@ -1,6 +1,5 @@
 class GenList;   //GenList类的前视声明
-class GenListNode;//广义表结点类的前
-视声明
+class GenListNode;//广义表结点类的前视声明
 struct Items {         //仅有结点信息的项
 	friend class GenlistNode;
 	friend class Genlist;
